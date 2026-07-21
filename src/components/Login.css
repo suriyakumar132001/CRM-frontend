@@ -1,0 +1,9 @@
+.login-form .auth-form h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background-color: #4f46e5;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
