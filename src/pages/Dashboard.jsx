@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getStats } from '../api/stats';
 import { getDailyReport } from '../api/dailyReport';
 import './Dashboard.css';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const [stats, setStats] = useState(null);
   const [todayReport, setTodayReport] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,18 +30,11 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
   return (
     <div className="dashboard-layout">
-     
       <main className="main-content">
         <div className="dashboard-header">
           <h2>Welcome, {user?.name || 'User'}</h2>
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
 
         {loading && <p>Loading dashboard...</p>}

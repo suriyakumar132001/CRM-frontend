@@ -14,52 +14,52 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
+      {isOpen && <div className="sb-overlay" onClick={onClose} />}
 
-      <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-header">
-          <h2>CRM</h2>
-          <button className="sidebar-close" onClick={onClose}>✕</button>
+      <aside className={`sb-sidebar ${isOpen ? 'sb-sidebar-open' : ''}`}>
+        <div className="sb-header">
+          <h2 className="sb-logo">CRM</h2>
+          <button className="sb-close" onClick={onClose}>✕</button>
         </div>
 
-        <nav className="sidebar-nav">
-          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+        <nav className="sb-nav">
+          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             📊 Dashboard
           </NavLink>
-          <NavLink to="/contacts" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/contacts" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             👥 Contacts
           </NavLink>
-          <NavLink to="/leads" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/leads" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             🎯 Leads
           </NavLink>
-          <NavLink to="/policies" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/policies" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             🚗 Vehicle Policies
           </NavLink>
-          <NavLink to="/mis-policies" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/mis-policies" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             📄 MIS Policies
           </NavLink>
-          <NavLink to="/payouts" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/payouts" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             💰 Payouts
           </NavLink>
-          <NavLink to="/tasks" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/tasks" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             ✅ Tasks
           </NavLink>
-          <NavLink to="/analytics" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+          <NavLink to="/analytics" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
             📈 Analytics
           </NavLink>
           {isAdmin && (
-            <NavLink to="/admin" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={onClose}>
+            <NavLink to="/admin" className={({ isActive }) => isActive ? 'sb-link sb-link-active' : 'sb-link'} onClick={onClose}>
               🔐 Admin
             </NavLink>
           )}
         </nav>
 
-        <div className="sidebar-footer">
-          <div className="sidebar-user">
-            <span className="sidebar-user-name">{user?.name || 'User'}</span>
-            <span className="sidebar-user-role">{user?.role || ''}</span>
+        <div className="sb-footer">
+          <div className="sb-user">
+            <span className="sb-user-name">{user?.name || 'User'}</span>
+            <span className="sb-user-role">{user?.role || ''}</span>
           </div>
-          <button className="sidebar-logout" onClick={handleLogout}>Logout</button>
+          <button className="sb-logout" onClick={handleLogout}>Logout</button>
         </div>
       </aside>
     </>
