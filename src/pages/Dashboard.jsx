@@ -38,21 +38,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-layout">
-      <aside className="sidebar">
-        <h3>CRM</h3>
-        <nav>
-          <Link to="/dashboard" className="active">Dashboard</Link>
-          <Link to="/contacts">Contacts</Link>
-          <Link to="/leads">Leads</Link>
-          <Link to="/policies">Policies</Link>
-          <Link to="/payouts">Payouts</Link>
-          <Link to="/daily-report">Daily Report</Link>
-          <Link to="/tasks">Tasks</Link>
-          {user?.role === 'admin' && <Link to="/admin">Admin</Link>}
-          <Link to="/mis-policies">Policy Register</Link>
-          <Link to="/analytics">Analytics</Link>
-        </nav>
-      </aside>
+     
       <main className="main-content">
         <div className="dashboard-header">
           <h2>Welcome, {user?.name || 'User'}</h2>
