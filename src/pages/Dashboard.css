@@ -181,3 +181,75 @@
   color: #dc2626;
   margin-bottom: 1rem;
 }
+
+/* ===== Tablet & below ===== */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  .sidebar h3 {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .sidebar nav a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .main-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .lead-breakdown {
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+}
+
+/* ===== Small phones ===== */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 1.6rem;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+}
