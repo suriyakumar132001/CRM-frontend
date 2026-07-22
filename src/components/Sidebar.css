@@ -1,7 +1,7 @@
 .sidebar {
   width: 240px;
   min-height: 100vh;
-  background-color: #111827;
+  background-color: #1e1b4b;
   color: #e5e7eb;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,10 @@
 
 .sidebar-header {
   padding: 1.4rem 1.2rem;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid #312e81;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .sidebar-header h2 {
@@ -18,6 +21,16 @@
   font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
+}
+
+.sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
 }
 
 .sidebar-nav {
@@ -37,11 +50,12 @@
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
+  white-space: nowrap;
   transition: background-color 0.15s ease;
 }
 
 .nav-link:hover {
-  background-color: #1f2937;
+  background-color: #312e81;
   color: #fff;
 }
 
@@ -52,7 +66,7 @@
 
 .sidebar-footer {
   padding: 1rem 1.2rem;
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid #312e81;
 }
 
 .sidebar-user {
@@ -69,7 +83,7 @@
 
 .sidebar-user-role {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #a5b4fc;
 }
 
 .sidebar-logout {
@@ -86,4 +100,38 @@
 
 .sidebar-logout:hover {
   background-color: #b91c1c;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+/* ===== MOBILE: sidebar becomes an off-canvas drawer ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close {
+    display: block;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
 }
