@@ -60,3 +60,43 @@
   font-size: 0.95rem;
   color: #374151;
 }
+
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+  .stat-cards {
+    gap: 0.7rem;
+  }
+
+  .stat-card {
+    min-width: 45%; /* 2 per row */
+    padding: 1rem 1.1rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    margin: 1.4rem 0 0.8rem;
+  }
+
+  .chart-row {
+    gap: 1rem;
+  }
+
+  .chart-box {
+    min-width: 100%; /* stack charts full width */
+    padding: 0.9rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    min-width: 100%; /* 1 per row on very small phones */
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+}

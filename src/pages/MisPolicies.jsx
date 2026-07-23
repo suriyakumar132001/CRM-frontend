@@ -3,7 +3,7 @@ import { getMisPolicies, deleteMisPolicy } from '../api/misPolicies';
 import { downloadMisPoliciesExcel, importMisPoliciesExcel } from '../api/exportImport';
 import MisPolicyFormModal from '../components/MisPolicyFormModal';
 import Pagination from '../components/Pagination';
-import './Contacts.css';
+import './MisPolicies.css';
 
 export default function MisPolicies() {
   const [policies, setPolicies] = useState([]);
@@ -75,7 +75,7 @@ export default function MisPolicies() {
     <div className="contacts-page">
       <div className="contacts-header">
         <h2>Policy Register (MIS)</h2>
-        <div style={{ display: 'flex', gap: '0.6rem' }}>
+        <div>
           <button className="btn-secondary" onClick={handleExport}>Export Excel</button>
           <button className="btn-secondary" onClick={handleImportClick}>Import Excel</button>
           <input type="file" accept=".xlsx" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
@@ -90,43 +90,45 @@ export default function MisPolicies() {
         <p>No policies yet. Add your first one, or scan a PDF.</p>
       ) : (
         <>
-          <table className="contacts-table">
-            <thead>
-              <tr>
-                <th>Vehicle No.</th>
-                <th>Client Name</th>
-                <th>Policy No.</th>
-                <th>Insurer</th>
-                <th>Segment</th>
-                <th>Make & Model</th>
-                <th>OD</th>
-                <th>TP</th>
-                <th>NET</th>
-                <th>Gross</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {policies.map((p) => (
-                <tr key={p._id}>
-                  <td>{p.vehicleNumber}</td>
-                  <td>{p.clientName}</td>
-                  <td>{p.policyNumber}</td>
-                  <td>{p.insuranceCompany}</td>
-                  <td>{p.segment}</td>
-                  <td style={{ maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.makeModel}</td>
-                  <td>₹{p.odPremium?.toLocaleString()}</td>
-                  <td>₹{p.tpPremium?.toLocaleString()}</td>
-                  <td>₹{p.netPremium?.toLocaleString()}</td>
-                  <td>₹{p.grossPremium?.toLocaleString()}</td>
-                  <td>
-                    <button className="btn-link" onClick={() => openEditModal(p)}>Edit</button>
-                    <button className="btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
-                  </td>
+          <div className="contacts-table-wrapper">
+            <table className="contacts-table">
+              <thead>
+                <tr>
+                  <th>Vehicle No.</th>
+                  <th>Client Name</th>
+                  <th>Policy No.</th>
+                  <th>Insurer</th>
+                  <th>Segment</th>
+                  <th>Make & Model</th>
+                  <th>OD</th>
+                  <th>TP</th>
+                  <th>NET</th>
+                  <th>Gross</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {policies.map((p) => (
+                  <tr key={p._id}>
+                    <td>{p.vehicleNumber}</td>
+                    <td>{p.clientName}</td>
+                    <td>{p.policyNumber}</td>
+                    <td>{p.insuranceCompany}</td>
+                    <td>{p.segment}</td>
+                    <td style={{ maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.makeModel}</td>
+                    <td>₹{p.odPremium?.toLocaleString()}</td>
+                    <td>₹{p.tpPremium?.toLocaleString()}</td>
+                    <td>₹{p.netPremium?.toLocaleString()}</td>
+                    <td>₹{p.grossPremium?.toLocaleString()}</td>
+                    <td>
+                      <button className="btn-link" onClick={() => openEditModal(p)}>Edit</button>
+                      <button className="btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <Pagination page={page} totalPages={totalPages} onPageChange={fetchPolicies} />
         </>
       )}
