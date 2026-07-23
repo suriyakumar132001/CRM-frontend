@@ -94,11 +94,33 @@ export default function MisPolicyFormModal({ policy, prefillData, onClose, onSav
           <div style={{ display: 'flex', gap: '0.6rem' }}>
             <div style={{ flex: 1 }}>
               <label style={{ fontSize: '0.8rem', color: '#666' }}>GVW</label>
-              <input type="number" name="gvw" value={form.gvw} onChange={handleChange} style={{ width: '100%' }} />
+              <input
+                type="number"
+                name="gvw"
+                value={form.gvw}
+                onChange={handleChange}
+                style={{ width: '100%', borderColor: form.gvw === 0 && scannedFileName ? '#f59e0b' : undefined }}
+              />
+              {form.gvw === 0 && scannedFileName && (
+                <p style={{ fontSize: '0.7rem', color: '#b45309', margin: '0.2rem 0 0' }}>
+                  Not found in scan — leave 0 if not a commercial vehicle, or check PDF
+                </p>
+              )}
             </div>
             <div style={{ flex: 1 }}>
               <label style={{ fontSize: '0.8rem', color: '#666' }}>CC</label>
-              <input type="number" name="cc" value={form.cc} onChange={handleChange} style={{ width: '100%' }} />
+              <input
+                type="number"
+                name="cc"
+                value={form.cc}
+                onChange={handleChange}
+                style={{ width: '100%', borderColor: form.cc === 0 && scannedFileName ? '#f59e0b' : undefined }}
+              />
+              {form.cc === 0 && scannedFileName && (
+                <p style={{ fontSize: '0.7rem', color: '#b45309', margin: '0.2rem 0 0' }}>
+                  Not found in scan — please check the policy PDF and enter manually
+                </p>
+              )}
             </div>
           </div>
 

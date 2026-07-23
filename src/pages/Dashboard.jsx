@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { getStats } from '../api/stats';
 import { getDailyReport } from '../api/dailyReport';
+import AIChat from "../components/AIChat";
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -51,6 +52,7 @@ export default function Dashboard() {
           {user?.role === 'admin' && <Link to="/admin">Admin</Link>}
           <Link to="/mis-policies">Policy Register</Link>
           <Link to="/analytics">Analytics</Link>
+          
         </nav>
       </aside>
       <main className="main-content">
@@ -130,6 +132,7 @@ export default function Dashboard() {
             </div>
           </>
         )}
+         <AIChat />
       </main>
     </div>
   );
