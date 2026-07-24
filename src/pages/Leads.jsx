@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getLeads, deleteLead } from '../api/leads';
 import LeadFormModal from '../components/LeadFormModal';
 import Pagination from '../components/Pagination';
+import FollowUpModal from '../components/FollowUpModal';
 import { downloadLeadsExcel } from '../api/exportImport';
 import '../pages/Contacts.css';
 
@@ -22,6 +23,7 @@ export default function Leads() {
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
+  const [followUpTarget, setFollowUpTarget] = useState(null); // { id, name }
 
   const fetchLeads = async (pageNum = page) => {
     setLoading(true);
@@ -121,6 +123,7 @@ export default function Leads() {
                   <td>${(l.value || 0).toLocaleString()}</td>
                   <td>
                     <button className="btn-link" onClick={() => openEditModal(l)}>Edit</button>
+                    <button className="btn-link" onClick={() => setFollowUpTarget({ id: l._id, name: l.name })}>🤖 Follow-up</button>
                     <button className="btn-link danger" onClick={() => handleDelete(l._id)}>Delete</button>
                   </td>
                 </tr>
@@ -137,6 +140,15 @@ export default function Leads() {
           lead={editingLead}
           onClose={() => setShowModal(false)}
           onSaved={handleSaved}
+        />
+      )}
+
+      {followUpTarget && (
+        <FollowUpModal
+          entityType="lead"
+          entityId={followUpTarget.id}
+          entityName={followUpTarget.name}
+          onClose={() => setFollowUpTarget(null)}
         />
       )}
     </div>

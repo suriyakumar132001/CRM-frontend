@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import "./AIChat.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function AIChat() {
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("");
@@ -21,7 +23,7 @@ export default function AIChat() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/ai/chat",
+        `${API_URL}/api/ai/chat`,
         { message }
       );
 

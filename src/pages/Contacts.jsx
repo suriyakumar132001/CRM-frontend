@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { getContacts, deleteContact } from '../api/contacts';
 import ContactFormModal from '../components/ContactFormModal';
 import Pagination from '../components/Pagination';
+import FollowUpModal from '../components/FollowUpModal';
 import { downloadContactsExcel, importContactsExcel } from '../api/exportImport';
 import './Contacts.css';
 
@@ -13,6 +14,7 @@ export default function Contacts() {
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingContact, setEditingContact] = useState(null);
+  const [followUpTarget, setFollowUpTarget] = useState(null); // { id, name }
   const fileInputRef = useRef(null);
 
   const fetchContacts = async (pageNum = page) => {
@@ -139,6 +141,7 @@ export default function Contacts() {
                   <td><span className={`status-badge ${c.status}`}>{c.status}</span></td>
                   <td>
                     <button className="btn-link" onClick={() => openEditModal(c)}>Edit</button>
+                    <button className="btn-link" onClick={() => setFollowUpTarget({ id: c._id, name: c.name })}>🤖 Follow-up</button>
                     <button className="btn-link danger" onClick={() => handleDelete(c._id)}>Delete</button>
                   </td>
                 </tr>
@@ -155,6 +158,15 @@ export default function Contacts() {
           contact={editingContact}
           onClose={() => setShowModal(false)}
           onSaved={handleSaved}
+        />
+      )}
+
+      {followUpTarget && (
+        <FollowUpModal
+          entityType="contact"
+          entityId={followUpTarget.id}
+          entityName={followUpTarget.name}
+          onClose={() => setFollowUpTarget(null)}
         />
       )}
     </div>
