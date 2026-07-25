@@ -5,6 +5,7 @@ export const getMisPolicies = (page = 1, limit = 10) =>
 export const createMisPolicy = (data) => api.post('/mis-policies', data);
 export const updateMisPolicy = (id, data) => api.put(`/mis-policies/${id}`, data);
 export const deleteMisPolicy = (id) => api.delete(`/mis-policies/${id}`);
+export const deleteAllMisPolicies = () => api.delete('/mis-policies/bulk/all');
 
 export const scanPolicyPdf = (file) => {
   const formData = new FormData();
@@ -13,3 +14,4 @@ export const scanPolicyPdf = (file) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+

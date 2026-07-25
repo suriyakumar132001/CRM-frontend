@@ -1,11 +1,15 @@
 import { useEffect, useState, useRef } from 'react';
-import { getMisPolicies, deleteMisPolicy } from '../api/misPolicies';
+import { getMisPolicies, deleteMisPolicy, deleteAllMisPolicies } from '../api/misPolicies';
 import { downloadMisPoliciesExcel, importMisPoliciesExcel } from '../api/exportImport';
 import MisPolicyFormModal from '../components/MisPolicyFormModal';
 import Pagination from '../components/Pagination';
+import { useAuth } from '../context/AuthContext';
 import './MisPolicies.css';
 
 export default function MisPolicies() {
+  const { user } = useAuth();
+  const isAdmin = ['super Admin', 'Admin'].includes(user?.role);
+
   const [policies, setPolicies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -14,6 +18,7 @@ export default function MisPolicies() {
   const [showModal, setShowModal] = useState(false);
   const [editingPolicy, setEditingPolicy] = useState(null);
   const [prefillData, setPrefillData] = useState(null);
+  const [deletingAll, setDeletingAll] = useState(false);
   const fileInputRef = useRef(null);
 
   const fetchPolicies = async (pageNum = page) => {
@@ -46,6 +51,21 @@ export default function MisPolicies() {
     }
   };
 
+  const handleDeleteAll = async () => {
+    if (!window.confirm('This will permanently delete ALL MIS policies. Are you sure?')) return;
+    if (!window.confirm('This action cannot be undone. Confirm delete all?')) return;
+    setDeletingAll(true);
+    try {
+      await deleteAllMisPolicies();
+      alert('All MIS policies deleted successfully');
+      fetchPolicies(1);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete all policies');
+    } finally {
+      setDeletingAll(false);
+    }
+  };
+
   const openAddModal = () => { setEditingPolicy(null); setPrefillData(null); setShowModal(true); };
   const openEditModal = (p) => { setEditingPolicy(p); setPrefillData(null); setShowModal(true); };
   const handleSaved = () => { setShowModal(false); fetchPolicies(editingPolicy ? page : 1); };
@@ -72,26 +92,41 @@ export default function MisPolicies() {
   };
 
   return (
-    <div className="contacts-page">
-      <div className="contacts-header">
-        <h2>Policy Register (MIS)</h2>
+    <div className="mp-page">
+      <div className="mp-header">
         <div>
-          <button className="btn-secondary" onClick={handleExport}>Export Excel</button>
-          <button className="btn-secondary" onClick={handleImportClick}>Import Excel</button>
+          <p className="mp-eyebrow">POLICY REGISTER</p>
+          <h1 className="mp-title">MIS Policies</h1>
+        </div>
+        <div className="mp-actions">
+          <button className="mp-btn-secondary" onClick={handleExport}>Export Excel</button>
+          <button className="mp-btn-secondary" onClick={handleImportClick}>Import Excel</button>
           <input type="file" accept=".xlsx" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
-          <button className="btn-primary" onClick={openAddModal}>+ Add Policy</button>
+          <button className="mp-btn-primary" onClick={openAddModal}>+ Add Policy</button>
+          {isAdmin && (
+            <button
+              className="mp-btn-danger"
+              onClick={handleDeleteAll}
+              disabled={deletingAll || policies.length === 0}
+            >
+              {deletingAll ? 'Deleting...' : 'Delete All'}
+            </button>
+          )}
         </div>
       </div>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="mp-error">{error}</p>}
+
       {loading ? (
-        <p>Loading...</p>
+        <p className="mp-loading">Loading...</p>
       ) : policies.length === 0 ? (
-        <p>No policies yet. Add your first one, or scan a PDF.</p>
+        <div className="mp-empty">
+          <p>No policies yet. Add your first one, or scan a PDF.</p>
+        </div>
       ) : (
         <>
-          <div className="contacts-table-wrapper">
-            <table className="contacts-table">
+          <div className="mp-table-wrap">
+            <table className="mp-table">
               <thead>
                 <tr>
                   <th>Vehicle No.</th>
@@ -110,19 +145,19 @@ export default function MisPolicies() {
               <tbody>
                 {policies.map((p) => (
                   <tr key={p._id}>
-                    <td>{p.vehicleNumber}</td>
+                    <td className="mp-mono">{p.vehicleNumber}</td>
                     <td>{p.clientName}</td>
-                    <td>{p.policyNumber}</td>
+                    <td className="mp-mono">{p.policyNumber}</td>
                     <td>{p.insuranceCompany}</td>
-                    <td>{p.segment}</td>
-                    <td style={{ maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.makeModel}</td>
+                    <td>{p.segment && <span className="mp-tag">{p.segment}</span>}</td>
+                    <td className="mp-truncate">{p.makeModel}</td>
                     <td>₹{p.odPremium?.toLocaleString()}</td>
                     <td>₹{p.tpPremium?.toLocaleString()}</td>
                     <td>₹{p.netPremium?.toLocaleString()}</td>
-                    <td>₹{p.grossPremium?.toLocaleString()}</td>
+                    <td className="mp-gross">₹{p.grossPremium?.toLocaleString()}</td>
                     <td>
-                      <button className="btn-link" onClick={() => openEditModal(p)}>Edit</button>
-                      <button className="btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
+                      <button className="mp-link" onClick={() => openEditModal(p)}>Edit</button>
+                      <button className="mp-link mp-link-danger" onClick={() => handleDelete(p._id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
