@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { getStats } from '../api/stats';
 import { getDailyReport } from '../api/dailyReport';
-import AIChat from "../components/AIChat";
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -109,7 +108,7 @@ export default function Dashboard() {
             </div>
           </>
         )}
-         <AIChat />
+        
       </main>
     </div>
   );
