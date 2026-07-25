@@ -8,6 +8,7 @@ import Register from "./components/Register";
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 import Dashboard from "./pages/Dashboard";
+import DailyReport from "./pages/DailyReport";
 import Contacts from "./pages/Contacts";
 import Leads from "./pages/Leads";
 import Policies from "./pages/Policies";
@@ -32,6 +33,7 @@ export default function App() {
           {/* Protected Routes */}
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/daily-report" element={<DailyReport />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/leads" element={<Leads />} />
             <Route path="/policies" element={<Policies />} />

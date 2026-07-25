@@ -31,85 +31,93 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="dashboard-layout">
-     <main className="main-content">
-        <div className="dashboard-header">
-          <h2>Welcome, {user?.name || 'User'}</h2>
+    <div className="dsh-page">
+      <div className="dsh-header">
+        <div>
+          <p className="dsh-eyebrow">DASHBOARD · {new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+          <h1 className="dsh-welcome">Welcome, {user?.name || 'User'}</h1>
         </div>
+      </div>
 
-        {loading && <p>Loading dashboard...</p>}
-        {error && <p className="error-text">{error}</p>}
+      {loading && <p className="dsh-loading">Loading dashboard...</p>}
+      {error && <p className="dsh-error">{error}</p>}
 
-        {todayReport && (
-          <>
-            <h3 style={{ marginBottom: '1rem', color: '#333' }}>Today's Snapshot</h3>
-            <div className="stats-grid" style={{ marginBottom: '2rem' }}>
-              <div className="stat-card">
-                <span className="stat-label">Policies Sold Today</span>
-                <span className="stat-value">{todayReport.policiesSold}</span>
-              </div>
-              <div className="stat-card highlight">
-                <span className="stat-label">Premium Collected Today</span>
-                <span className="stat-value">₹{todayReport.totalPremiumCollected.toLocaleString()}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-label">Commission Earned Today</span>
-                <span className="stat-value">₹{todayReport.payoutSummary.commission.total.toLocaleString()}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-label">Claims Paid Today</span>
-                <span className="stat-value">₹{todayReport.payoutSummary.claim.total.toLocaleString()}</span>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right', marginBottom: '2rem' }}>
-              <Link to="/daily-report" className="btn-link" style={{ fontSize: '0.9rem' }}>View full daily report →</Link>
-            </div>
-          </>
-        )}
+      {todayReport && (
+        <section className="dsh-section">
+          <div className="dsh-section-title-row">
+            <span className="dsh-live-dot"></span>
+            <h2 className="dsh-section-title">Today's Snapshot</h2>
+          </div>
 
-        {stats && (
-          <>
-            <h3 style={{ marginBottom: '1rem', color: '#333' }}>Overview</h3>
-            <div className="stats-grid" style={{ marginBottom: '2rem' }}>
-              <div className="stat-card">
-                <span className="stat-label">Total Contacts</span>
-                <span className="stat-value">{stats.totalContacts}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-label">Total Leads</span>
-                <span className="stat-value">{stats.totalLeads}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-label">Open Pipeline Value</span>
-                <span className="stat-value">₹{stats.pipelineValue.toLocaleString()}</span>
-              </div>
-              <div className="stat-card highlight">
-                <span className="stat-label">Won Value</span>
-                <span className="stat-value">₹{stats.wonValue.toLocaleString()}</span>
-              </div>
+          <div className="dsh-grid">
+            <div className="dsh-card">
+              <span className="dsh-card-label">Policies Sold Today</span>
+              <span className="dsh-card-value">{todayReport.policiesSold}</span>
             </div>
+            <div className="dsh-card dsh-card-accent">
+              <span className="dsh-card-label">Premium Collected Today</span>
+              <span className="dsh-card-value">₹{todayReport.totalPremiumCollected.toLocaleString()}</span>
+            </div>
+            <div className="dsh-card">
+              <span className="dsh-card-label">Commission Earned Today</span>
+              <span className="dsh-card-value">₹{todayReport.payoutSummary.commission.total.toLocaleString()}</span>
+            </div>
+            <div className="dsh-card">
+              <span className="dsh-card-label">Claims Paid Today</span>
+              <span className="dsh-card-value">₹{todayReport.payoutSummary.claim.total.toLocaleString()}</span>
+            </div>
+          </div>
 
-            <div className="lead-breakdown">
-              <h3>Leads by Status</h3>
-              {stats.leadsByStatus.length === 0 ? (
-                <p>No leads yet.</p>
-              ) : (
-                <div className="breakdown-list">
-                  {stats.leadsByStatus.map((s) => (
-                    <div key={s._id} className="breakdown-row">
-                      <span className={`status-dot status-${s._id}`}></span>
-                      <span className="breakdown-label">{s._id}</span>
-                      <span className="breakdown-count">{s.count} leads</span>
-                      <span className="breakdown-value">₹{s.value.toLocaleString()}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+          <div className="dsh-report-link-row">
+            <Link to="/daily-report" className="dsh-report-link">View full daily report →</Link>
+          </div>
+        </section>
+      )}
+
+      {stats && (
+        <section className="dsh-section">
+          <div className="dsh-section-title-row">
+            <h2 className="dsh-section-title">Overview</h2>
+          </div>
+
+          <div className="dsh-grid">
+            <div className="dsh-card">
+              <span className="dsh-card-label">Total Contacts</span>
+              <span className="dsh-card-value">{stats.totalContacts}</span>
             </div>
-          </>
-        )}
-        
-      </main>
+            <div className="dsh-card">
+              <span className="dsh-card-label">Total Leads</span>
+              <span className="dsh-card-value">{stats.totalLeads}</span>
+            </div>
+            <div className="dsh-card">
+              <span className="dsh-card-label">Open Pipeline Value</span>
+              <span className="dsh-card-value">₹{stats.pipelineValue.toLocaleString()}</span>
+            </div>
+            <div className="dsh-card dsh-card-accent">
+              <span className="dsh-card-label">Won Value</span>
+              <span className="dsh-card-value">₹{stats.wonValue.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <div className="dsh-breakdown">
+            <h3 className="dsh-breakdown-title">Leads by Status</h3>
+            {stats.leadsByStatus.length === 0 ? (
+              <p className="dsh-empty">No leads yet.</p>
+            ) : (
+              <div className="dsh-breakdown-list">
+                {stats.leadsByStatus.map((s) => (
+                  <div key={s._id} className="dsh-breakdown-row">
+                    <span className={`dsh-status-dot dsh-status-${s._id}`}></span>
+                    <span className="dsh-breakdown-label">{s._id}</span>
+                    <span className="dsh-breakdown-count">{s.count} leads</span>
+                    <span className="dsh-breakdown-value">₹{s.value.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
