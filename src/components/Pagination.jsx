@@ -27,8 +27,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
 
       <button
         disabled={page === totalPages}
-        onClick={() => onPageChange(page + 1)}
-      >
+        onClick={() => onPageChange(page + 1)}>
         Next
       </button>
     </div>

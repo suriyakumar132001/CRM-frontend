@@ -1,14 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getPolicies, deletePolicy, deleteAllPolicies, getExpiringPolicies } from '../api/policies';
 import PolicyFormModal from '../components/PolicyFormModal';
 import Pagination from '../components/Pagination';
 import { downloadPoliciesExcel, importPoliciesExcel } from '../api/exportImport';
 import { useAuth } from '../context/AuthContext';
-import './Contacts.css';
+import './Panel.css';
 
 export default function Policies() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [policies, setPolicies] = useState([]);
   const [page, setPage] = useState(1);
@@ -137,85 +135,105 @@ export default function Policies() {
   };
 
   return (
-    <div className="contacts-page">
-      <div className="contacts-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-          <button className="btn-secondary" onClick={() => navigate(-1)}>← Back</button>
+    <div className="panel-page">
+      <div className="panel-header">
+        <div className="panel-header-text">
+          <span className="panel-eyebrow">Coverage records</span>
           <h2>Vehicle Policies</h2>
         </div>
-        <div style={{ display: 'flex', gap: '0.6rem' }}>
-          <button className="btn-secondary" onClick={handleExport}>Export Excel</button>
-          <button className="btn-secondary" onClick={handleImportClick}>Import Excel</button>
+        <div className="panel-toolbar">
           <input type="file" accept=".xlsx" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
-          <button className="btn-primary" onClick={openAddModal}>+ Add Policy</button>
-          {['super Admin', 'Admin'].includes(user?.role) && (
-            <button
-              className="btn-delete-all"
-              onClick={handleDeleteAll}
-              disabled={deletingAll || policies.length === 0}
-            >
-              {deletingAll ? 'Deleting...' : 'Delete All'}
-            </button>
+          <button className="panel-btn panel-btn-secondary" onClick={handleImportClick}>Import Excel</button>
+          {policies.length > 0 && (
+            <>
+              <button className="panel-btn panel-btn-secondary" onClick={handleExport}>Export Excel</button>
+              <button className="panel-btn panel-btn-primary" onClick={openAddModal}>+ Add Policy</button>
+              {['super Admin', 'Admin'].includes(user?.role) && (
+                <button
+                  className="panel-btn panel-btn-danger"
+                  onClick={handleDeleteAll}
+                  disabled={deletingAll}
+                >
+                  {deletingAll ? 'Deleting…' : 'Delete All'}
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
 
       {expiringCount > 0 && (
-        <div className="expiring-banner" onClick={toggleExpiringFilter}>
+        <div className="panel-banner" onClick={toggleExpiringFilter}>
           ⚠️ {expiringCount} {expiringCount === 1 ? 'policy is' : 'policies are'} expiring within 30 days.
-          <span className="expiring-banner-link">
+          <span className="panel-banner-link">
             {showExpiringOnly ? ' Show all policies' : ' View expiring policies'}
           </span>
         </div>
       )}
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="panel-state-error">{error}</p>}
+
       {loading ? (
-        <p>Loading...</p>
+        <div className="panel-state">
+          <div className="panel-state-spinner" />
+          <span>Loading policies…</span>
+        </div>
       ) : policies.length === 0 ? (
-        <p>{showExpiringOnly ? 'No policies expiring soon.' : 'No policies yet. Add your first one.'}</p>
+        <div className="panel-state">
+          {showExpiringOnly ? 'No policies expiring soon.' : 'No policies yet. Add your first one.'}
+        </div>
       ) : (
         <>
-          <table className="contacts-table">
-            <thead>
-              <tr>
-                <th>Customer</th>
-                <th>Mobile</th>
-                <th>Policy No.</th>
-                <th>Product</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Txn Date</th>
-                <th>Expiry Date</th>
-                <th>Payment</th>
-                <th>Settlement</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {policies.map((p) => (
-                <tr key={p._id} className={isExpiringSoon(p.policyEndDate) ? 'row-expiring' : ''}>
-                  <td>{p.customerName}</td>
-                  <td>{p.mobileNumber}</td>
-                  <td>{p.policyNumber}</td>
-                  <td>{p.product?.replace('_', ' ')}</td>
-                  <td>{p.policyType}</td>
-                  <td>₹{p.txnAmount?.toLocaleString()}</td>
-                  <td>{p.dateOfTxn ? new Date(p.dateOfTxn).toLocaleDateString() : '-'}</td>
-                  <td>
-                    {p.policyEndDate ? new Date(p.policyEndDate).toLocaleDateString() : '-'}
-                    {isExpiringSoon(p.policyEndDate) && <span className="expiry-tag">Expiring</span>}
-                  </td>
-                  <td><span className={`status-badge ${p.paymentStatus === 'SUCCESS' ? 'active' : 'inactive'}`}>{p.paymentStatus}</span></td>
-                  <td><span className={`status-badge ${p.paymentSettlementStatus === 'SETTLED' ? 'active' : 'status-contacted'}`}>{p.paymentSettlementStatus}</span></td>
-                  <td>
-                    <button className="btn-link" onClick={() => openEditModal(p)}>Edit</button>
-                    <button className="btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
-                  </td>
+          <div className="panel-table-wrap">
+            <table className="panel-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Mobile</th>
+                  <th>Policy No.</th>
+                  <th>Product</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Txn Date</th>
+                  <th>Expiry Date</th>
+                  <th>Payment</th>
+                  <th>Settlement</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {policies.map((p) => (
+                  <tr key={p._id} className={isExpiringSoon(p.policyEndDate) ? 'panel-row-warn' : ''}>
+                    <td>{p.customerName}</td>
+                    <td className="panel-cell-muted">{p.mobileNumber}</td>
+                    <td className="panel-cell-muted">{p.policyNumber}</td>
+                    <td>{p.product?.replace('_', ' ')}</td>
+                    <td>{p.policyType}</td>
+                    <td className="panel-cell-muted">₹{p.txnAmount?.toLocaleString()}</td>
+                    <td className="panel-cell-muted">{p.dateOfTxn ? new Date(p.dateOfTxn).toLocaleDateString() : '-'}</td>
+                    <td className="panel-cell-muted">
+                      {p.policyEndDate ? new Date(p.policyEndDate).toLocaleDateString() : '-'}
+                      {isExpiringSoon(p.policyEndDate) && <span className="panel-tag-warn">Expiring</span>}
+                    </td>
+                    <td>
+                      <span className={`panel-badge ${p.paymentStatus === 'SUCCESS' ? 'panel-badge-good' : 'panel-badge-danger'}`}>
+                        {p.paymentStatus}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`panel-badge ${p.paymentSettlementStatus === 'SETTLED' ? 'panel-badge-good' : 'panel-badge-warn'}`}>
+                        {p.paymentSettlementStatus}
+                      </span>
+                    </td>
+                    <td>
+                      <button className="panel-btn-link" onClick={() => openEditModal(p)}>Edit</button>
+                      <button className="panel-btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {!showExpiringOnly && <Pagination page={page} totalPages={totalPages} onPageChange={fetchPolicies} />}
         </>
       )}

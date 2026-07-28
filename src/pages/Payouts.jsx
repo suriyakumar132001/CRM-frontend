@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { getPayouts, deletePayout } from '../api/payouts';
 import PayoutFormModal from '../components/PayoutFormModal';
 import Pagination from '../components/Pagination';
-import './Contacts.css';
+import './Panel.css';
 
 const TYPE_LABELS = { commission: 'Commission', claim: 'Claim', premium: 'Premium' };
-const TYPE_COLORS = { commission: 'status-won', claim: 'status-lost', premium: 'status-new' };
+const TYPE_BADGE = { commission: 'panel-badge-good', claim: 'panel-badge-danger', premium: 'panel-badge-accent' };
 
 export default function Payouts() {
   const [payouts, setPayouts] = useState([]);
@@ -49,53 +49,72 @@ export default function Payouts() {
   const handleSaved = () => { setShowModal(false); fetchPayouts(1); };
 
   return (
-    <div className="contacts-page">
-      <div className="contacts-header">
-        <h2>Payouts</h2>
-        <button className="btn-primary" onClick={() => setShowModal(true)}>+ Add Payout</button>
+    <div className="panel-page">
+      <div className="panel-header">
+        <div className="panel-header-text">
+          <span className="panel-eyebrow">Money movement</span>
+          <h2>Payouts</h2>
+        </div>
+        <div className="panel-toolbar">
+          <button className="panel-btn panel-btn-primary" onClick={() => setShowModal(true)}>+ Add Payout</button>
+        </div>
       </div>
 
-      <div className="task-filters">
+      <div className="panel-filters">
         {['', 'commission', 'claim', 'premium'].map((t) => (
-          <button key={t} className={`filter-chip ${filterType === t ? 'active' : ''}`} onClick={() => setFilterType(t)}>
+          <button
+            key={t}
+            className={`panel-filter-chip ${filterType === t ? 'active' : ''}`}
+            onClick={() => setFilterType(t)}
+          >
             {t === '' ? 'All' : TYPE_LABELS[t]}
           </button>
         ))}
       </div>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="panel-state-error">{error}</p>}
+
       {loading ? (
-        <p>Loading...</p>
+        <div className="panel-state">
+          <div className="panel-state-spinner" />
+          <span>Loading payouts…</span>
+        </div>
       ) : payouts.length === 0 ? (
-        <p>No payouts recorded yet.</p>
+        <div className="panel-state">No payouts recorded yet.</div>
       ) : (
         <>
-          <table className="contacts-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Customer</th>
-                <th>Linked Policy</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payouts.map((p) => (
-                <tr key={p._id}>
-                  <td>{new Date(p.date).toLocaleDateString()}</td>
-                  <td><span className={`status-badge ${TYPE_COLORS[p.type]}`}>{TYPE_LABELS[p.type]}</span></td>
-                  <td>{p.customerName || '-'}</td>
-                  <td>{p.policy?.vehicleNumber || '-'}</td>
-                  <td>₹{p.amount.toLocaleString()}</td>
-                  <td>{p.description}</td>
-                  <td><button className="btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button></td>
+          <div className="panel-table-wrap">
+            <table className="panel-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Customer</th>
+                  <th>Linked Policy</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {payouts.map((p) => (
+                  <tr key={p._id}>
+                    <td className="panel-cell-muted">{new Date(p.date).toLocaleDateString()}</td>
+                    <td>
+                      <span className={`panel-badge ${TYPE_BADGE[p.type]}`}>{TYPE_LABELS[p.type]}</span>
+                    </td>
+                    <td>{p.customerName || '-'}</td>
+                    <td className="panel-cell-muted">{p.policy?.vehicleNumber || '-'}</td>
+                    <td className="panel-cell-muted">₹{p.amount.toLocaleString()}</td>
+                    <td>{p.description}</td>
+                    <td>
+                      <button className="panel-btn-link danger" onClick={() => handleDelete(p._id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <Pagination page={page} totalPages={totalPages} onPageChange={fetchPayouts} />
         </>
       )}

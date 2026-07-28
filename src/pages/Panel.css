@@ -1,0 +1,404 @@
+/* ==========================================================================
+   Panel pages — "Control Deck" theme (shared with Admin.css)
+   Used by Policies.jsx and Payouts.jsx
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+.panel-page {
+  --panel-bg: #F5F6F8;
+  --panel-surface: #FFFFFF;
+  --panel-ink: #1B2430;
+  --panel-muted: #6B7280;
+  --panel-line: #E4E7EC;
+  --panel-accent: #2D5BFF;
+  --panel-accent-soft: #EAEFFF;
+  --panel-danger: #D7263D;
+  --panel-danger-soft: #FDECEE;
+  --panel-warn: #B45309;
+  --panel-warn-soft: #FEF3E2;
+  --panel-good: #0F766E;
+  --panel-good-soft: #E6F5F3;
+  --panel-radius: 10px;
+  --panel-shadow: 0 1px 2px rgba(27, 36, 48, 0.04), 0 8px 24px rgba(27, 36, 48, 0.05);
+
+  font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  min-height: 100vh;
+  padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+  box-sizing: border-box;
+}
+
+.panel-page * {
+  box-sizing: border-box;
+}
+
+.panel-mono {
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+/* ---------- Header ---------- */
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.panel-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.panel-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.panel-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--panel-accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--panel-accent);
+  box-shadow: 0 0 0 3px var(--panel-accent-soft);
+}
+
+.panel-header h2 {
+  font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.panel-subtitle {
+  color: var(--panel-muted);
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.panel-toolbar {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ---------- Buttons ---------- */
+
+.panel-btn {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.panel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.panel-btn-primary {
+  background: var(--panel-accent);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(45, 91, 255, 0.25);
+}
+
+.panel-btn-primary:hover:not(:disabled) {
+  background: #244bd9;
+}
+
+.panel-btn-secondary {
+  background: var(--panel-surface);
+  color: var(--panel-ink);
+  border-color: var(--panel-line);
+}
+
+.panel-btn-secondary:hover:not(:disabled) {
+  border-color: var(--panel-accent);
+  color: var(--panel-accent);
+}
+
+.panel-btn-danger {
+  background: var(--panel-surface);
+  color: var(--panel-danger);
+  border-color: var(--panel-danger-soft);
+}
+
+.panel-btn-danger:hover:not(:disabled) {
+  background: var(--panel-danger-soft);
+  border-color: var(--panel-danger);
+}
+
+.panel-btn-back {
+  background: var(--panel-surface);
+  color: var(--panel-muted);
+  border-color: var(--panel-line);
+  font-size: 0.8rem;
+  padding: 0.5rem 0.8rem;
+}
+
+.panel-btn-back:hover {
+  color: var(--panel-ink);
+  border-color: var(--panel-accent);
+}
+
+.panel-btn-link {
+  background: none;
+  border: none;
+  color: var(--panel-accent);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.panel-btn-link:hover {
+  text-decoration: underline;
+}
+
+.panel-btn-link.danger {
+  color: var(--panel-danger);
+}
+
+/* ---------- Banner ---------- */
+
+.panel-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--panel-warn-soft);
+  color: #92400E;
+  border: 1px solid #F5D9AE;
+  border-radius: var(--panel-radius);
+  padding: 0.75rem 1.1rem;
+  font-size: 0.86rem;
+  margin-bottom: 1.4rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.panel-banner:hover {
+  border-color: var(--panel-warn);
+}
+
+.panel-banner-link {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ---------- Filter chips ---------- */
+
+.panel-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.panel-filter-chip {
+  background: var(--panel-surface);
+  border: 1px solid var(--panel-line);
+  color: var(--panel-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.panel-filter-chip:hover {
+  border-color: var(--panel-accent);
+  color: var(--panel-accent);
+}
+
+.panel-filter-chip.active {
+  background: var(--panel-accent);
+  border-color: var(--panel-accent);
+  color: #fff;
+}
+
+/* ---------- Table ---------- */
+
+.panel-table-wrap {
+  background: var(--panel-surface);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.panel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+  min-width: 640px;
+}
+
+.panel-table thead th {
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--panel-muted);
+  font-weight: 600;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--panel-line);
+  background: #FAFBFC;
+  white-space: nowrap;
+}
+
+.panel-table tbody td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--panel-line);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.panel-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.panel-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+.panel-table tbody tr:hover {
+  background: #FAFBFD;
+}
+
+.panel-table tbody tr.panel-row-warn {
+  background: #FFFBF3;
+}
+
+.panel-table tbody tr.panel-row-warn:hover {
+  background: #FFF6E6;
+}
+
+.panel-cell-muted {
+  color: var(--panel-muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+}
+
+/* ---------- Badges / tags ---------- */
+
+.panel-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.panel-badge-good {
+  background: var(--panel-good-soft);
+  color: var(--panel-good);
+}
+
+.panel-badge-warn {
+  background: var(--panel-warn-soft);
+  color: var(--panel-warn);
+}
+
+.panel-badge-danger {
+  background: var(--panel-danger-soft);
+  color: var(--panel-danger);
+}
+
+.panel-badge-accent {
+  background: var(--panel-accent-soft);
+  color: var(--panel-accent);
+}
+
+.panel-tag-warn {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--panel-warn);
+  background: var(--panel-warn-soft);
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+}
+
+/* ---------- States ---------- */
+
+.panel-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 3.5rem 1.5rem;
+  color: var(--panel-muted);
+  font-size: 0.92rem;
+}
+
+.panel-state-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--panel-line);
+  border-top-color: var(--panel-accent);
+  border-radius: 50%;
+  animation: panel-spin 0.7s linear infinite;
+}
+
+@keyframes panel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.panel-state-error {
+  color: var(--panel-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-state-spinner {
+    animation: none;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .panel-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .panel-toolbar {
+    justify-content: flex-start;
+  }
+}

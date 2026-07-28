@@ -1,28 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap');
+
 .pagination {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.35rem;
   justify-content: center;
+  align-items: center;
   margin-top: 1.5rem;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
 .pagination button {
-  padding: 0.45rem 0.8rem;
-  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #E4E7EC;
   background: #fff;
-  border-radius: 6px;
+  color: #1B2430;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 0.9rem;
-  min-width: 38px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  min-width: 36px;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #f3f4f6;
+.pagination button:hover:not(:disabled):not(.active) {
+  border-color: #2D5BFF;
+  color: #2D5BFF;
 }
 
 .pagination button.active {
-  background-color: #4f46e5;
+  background-color: #2D5BFF;
   color: #fff;
-  border-color: #4f46e5;
+  border-color: #2D5BFF;
   font-weight: 600;
 }
 
