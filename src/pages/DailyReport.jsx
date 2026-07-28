@@ -1,6 +1,54 @@
 import { useEffect, useState } from 'react';
 import { getDailyReport, setTarget } from '../api/dailyReport';
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiSliders,
+  FiFileText,
+  FiTrendingUp,
+  FiUserPlus,
+  FiPercent,
+  FiXCircle,
+  FiDollarSign,
+} from 'react-icons/fi';
 import './DailyReport.css';
+
+function ProgressRing({ percent, color, size = 84 }) {
+  const stroke = 8;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.min(percent, 100);
+  const offset = circumference - (clamped / 100) * circumference;
+
+  return (
+    <svg width={size} height={size} className="dr-ring">
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke="#F1F2F6"
+        strokeWidth={stroke}
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={color}
+        strokeWidth={stroke}
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        strokeLinecap="round"
+        transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        className="dr-ring-fill"
+      />
+      <text x="50%" y="50%" textAnchor="middle" dy="0.35em" className="dr-ring-text">
+        {clamped}%
+      </text>
+    </svg>
+  );
+}
 
 export default function DailyReport() {
   const [report, setReport] = useState(null);
@@ -33,6 +81,12 @@ export default function DailyReport() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
+  const shiftDate = (days) => {
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    setDate(d.toISOString().slice(0, 10));
+  };
+
   const handleSaveTarget = async (e) => {
     e.preventDefault();
     try {
@@ -55,14 +109,18 @@ export default function DailyReport() {
           <h1 className="dr-title">Daily Summary</h1>
         </div>
         <div className="dr-controls">
-          <input
-            type="date"
-            className="dr-date-input"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <div className="dr-date-nav">
+            <button className="dr-nav-btn" onClick={() => shiftDate(-1)}><FiChevronLeft /></button>
+            <input
+              type="date"
+              className="dr-date-input"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <button className="dr-nav-btn" onClick={() => shiftDate(1)}><FiChevronRight /></button>
+          </div>
           <button className="dr-btn-secondary" onClick={() => setShowTargetForm(!showTargetForm)}>
-            Set Targets
+            <FiSliders /> Set Targets
           </button>
         </div>
       </div>
@@ -93,75 +151,93 @@ export default function DailyReport() {
 
       {report && (
         <>
-          <div className="dr-grid">
-            <div className="dr-card">
-              <span className="dr-card-label">Policies Sold</span>
-              <span className="dr-card-value">{report.policiesSold}</span>
+          {/* Compact KPI strip */}
+          <div className="dr-kpi-strip">
+            <div className="dr-kpi">
+              <FiFileText className="dr-kpi-icon" />
+              <div>
+                <span className="dr-kpi-value">{report.policiesSold}</span>
+                <span className="dr-kpi-label">Policies Sold</span>
+              </div>
             </div>
-            <div className="dr-card dr-card-accent">
-              <span className="dr-card-label">Premium Collected</span>
-              <span className="dr-card-value">₹{report.totalPremiumCollected.toLocaleString()}</span>
+            <div className="dr-kpi-divider"></div>
+            <div className="dr-kpi">
+              <FiTrendingUp className="dr-kpi-icon dr-kpi-icon-amber" />
+              <div>
+                <span className="dr-kpi-value">₹{report.totalPremiumCollected.toLocaleString()}</span>
+                <span className="dr-kpi-label">Premium Collected</span>
+              </div>
             </div>
-            <div className="dr-card">
-              <span className="dr-card-label">New Customers</span>
-              <span className="dr-card-value">{report.newCustomers}</span>
+            <div className="dr-kpi-divider"></div>
+            <div className="dr-kpi">
+              <FiUserPlus className="dr-kpi-icon" />
+              <div>
+                <span className="dr-kpi-value">{report.newCustomers}</span>
+                <span className="dr-kpi-label">New Customers</span>
+              </div>
             </div>
-            <div className="dr-card">
-              <span className="dr-card-label">Commission Earned</span>
-              <span className="dr-card-value">₹{report.payoutSummary.commission.total.toLocaleString()}</span>
+            <div className="dr-kpi-divider"></div>
+            <div className="dr-kpi">
+              <FiPercent className="dr-kpi-icon" />
+              <div>
+                <span className="dr-kpi-value">₹{report.payoutSummary.commission.total.toLocaleString()}</span>
+                <span className="dr-kpi-label">Commission Earned</span>
+              </div>
             </div>
           </div>
 
-          {report.target && (report.target.policyTarget > 0 || report.target.premiumTarget > 0) && (
-            <div className="dr-panel">
-              <h3 className="dr-panel-title">Target Progress</h3>
-
-              {report.target.policyTarget > 0 && (
-                <div className="dr-progress-block">
-                  <div className="dr-progress-row">
-                    <span>Policies: {report.policiesSold} / {report.target.policyTarget}</span>
-                    <span>{report.target.policyProgress}%</span>
-                  </div>
-                  <div className="dr-progress-track">
-                    <div className="dr-progress-fill dr-progress-indigo" style={{ width: `${Math.min(report.target.policyProgress, 100)}%` }}></div>
-                  </div>
+          <div className="dr-columns">
+            {/* Target progress rings */}
+            {report.target && (report.target.policyTarget > 0 || report.target.premiumTarget > 0) && (
+              <div className="dr-panel dr-panel-targets">
+                <h3 className="dr-panel-title">Target Progress</h3>
+                <div className="dr-rings-row">
+                  {report.target.policyTarget > 0 && (
+                    <div className="dr-ring-block">
+                      <ProgressRing percent={report.target.policyProgress} color="#4F46E5" />
+                      <p className="dr-ring-caption">Policies</p>
+                      <p className="dr-ring-sub">{report.policiesSold} / {report.target.policyTarget}</p>
+                    </div>
+                  )}
+                  {report.target.premiumTarget > 0 && (
+                    <div className="dr-ring-block">
+                      <ProgressRing percent={report.target.premiumProgress} color="#F5A524" />
+                      <p className="dr-ring-caption">Premium</p>
+                      <p className="dr-ring-sub">₹{(report.totalPremiumCollected / 1000).toFixed(1)}k / ₹{(report.target.premiumTarget / 1000).toFixed(1)}k</p>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
+            )}
 
-              {report.target.premiumTarget > 0 && (
-                <div className="dr-progress-block">
-                  <div className="dr-progress-row">
-                    <span>Premium: ₹{report.totalPremiumCollected.toLocaleString()} / ₹{report.target.premiumTarget.toLocaleString()}</span>
-                    <span>{report.target.premiumProgress}%</span>
+            {/* Payout ledger */}
+            <div className="dr-panel dr-panel-ledger">
+              <h3 className="dr-panel-title">Payout Breakdown — {report.date}</h3>
+              <div className="dr-ledger">
+                <div className="dr-ledger-row">
+                  <div className="dr-ledger-icon dr-ledger-icon-green"><FiPercent /></div>
+                  <div className="dr-ledger-info">
+                    <span className="dr-ledger-label">Commission</span>
+                    <span className="dr-ledger-count">{report.payoutSummary.commission.count} entries</span>
                   </div>
-                  <div className="dr-progress-track">
-                    <div className="dr-progress-fill dr-progress-amber" style={{ width: `${Math.min(report.target.premiumProgress, 100)}%` }}></div>
-                  </div>
+                  <span className="dr-ledger-value">₹{report.payoutSummary.commission.total.toLocaleString()}</span>
                 </div>
-              )}
-            </div>
-          )}
-
-          <div className="dr-panel">
-            <h3 className="dr-panel-title">Payout Breakdown ({report.date})</h3>
-            <div className="dr-breakdown-list">
-              <div className="dr-breakdown-row">
-                <span className="dr-dot dr-dot-green"></span>
-                <span className="dr-breakdown-label">Commission</span>
-                <span className="dr-breakdown-count">{report.payoutSummary.commission.count} entries</span>
-                <span className="dr-breakdown-value">₹{report.payoutSummary.commission.total.toLocaleString()}</span>
-              </div>
-              <div className="dr-breakdown-row">
-                <span className="dr-dot dr-dot-red"></span>
-                <span className="dr-breakdown-label">Claims Paid</span>
-                <span className="dr-breakdown-count">{report.payoutSummary.claim.count} entries</span>
-                <span className="dr-breakdown-value">₹{report.payoutSummary.claim.total.toLocaleString()}</span>
-              </div>
-              <div className="dr-breakdown-row">
-                <span className="dr-dot dr-dot-indigo"></span>
-                <span className="dr-breakdown-label">Premium Income</span>
-                <span className="dr-breakdown-count">{report.payoutSummary.premium.count} entries</span>
-                <span className="dr-breakdown-value">₹{report.payoutSummary.premium.total.toLocaleString()}</span>
+                <div className="dr-ledger-row">
+                  <div className="dr-ledger-icon dr-ledger-icon-red"><FiXCircle /></div>
+                  <div className="dr-ledger-info">
+                    <span className="dr-ledger-label">Claims Paid</span>
+                    <span className="dr-ledger-count">{report.payoutSummary.claim.count} entries</span>
+                  </div>
+                  <span className="dr-ledger-value">₹{report.payoutSummary.claim.total.toLocaleString()}</span>
+                </div>
+                <div className="dr-ledger-row">
+                  <div className="dr-ledger-icon dr-ledger-icon-indigo"><FiDollarSign /></div>
+                  <div className="dr-ledger-info">
+                    <span className="dr-ledger-label">Premium Income</span>
+                    <span className="dr-ledger-count">{report.payoutSummary.premium.count} entries</span>
+                  </div>
+                  <span className="dr-ledger-value">₹{report.payoutSummary.premium.total.toLocaleString()}</span>
+                </div>
               </div>
             </div>
           </div>

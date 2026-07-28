@@ -1,27 +1,60 @@
 .sb-sidebar {
-  width: 240px !important;
+  width: 250px !important;
   min-height: 100vh !important;
-  background-color: #1e1b4b !important;
+  background: linear-gradient(180deg, #0F1B3D 0%, #14224a 100%) !important;
   color: #e5e7eb !important;
   display: flex !important;
   flex-direction: column !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
+/* ===== Header / Brand ===== */
 .sb-header {
   padding: 1.4rem 1.2rem !important;
-  border-bottom: 1px solid #312e81 !important;
+  border-bottom: 1px solid rgba(245, 165, 36, 0.15) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+}
+
+.sb-brand {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
+  gap: 0.7rem !important;
+}
+
+.sb-badge {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 30%, #F5A524, #c9820f) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #0F1B3D !important;
+  font-size: 1.1rem !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 0 0 3px rgba(245, 165, 36, 0.14) !important;
 }
 
 .sb-logo {
   margin: 0 !important;
-  font-size: 1.3rem !important;
-  font-weight: 700 !important;
+  font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
   color: #fff !important;
+  line-height: 1.1 !important;
+}
+
+.sb-eyebrow {
+  margin: 0.15rem 0 0 !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.1em !important;
+  color: #F5A524 !important;
+  text-transform: uppercase !important;
 }
 
 .sb-close {
@@ -29,11 +62,14 @@
   background: none !important;
   border: none !important;
   color: #fff !important;
-  font-size: 1.3rem !important;
+  font-size: 1.1rem !important;
   cursor: pointer !important;
-  padding: 0.2rem 0.5rem !important;
+  padding: 0.2rem !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
+/* ===== Nav ===== */
 .sb-nav {
   flex: 1 !important;
   padding: 1rem 0.7rem !important;
@@ -45,74 +81,122 @@
 }
 
 .sb-link {
-  display: block !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.7rem !important;
   width: 100% !important;
   box-sizing: border-box !important;
   padding: 0.65rem 0.9rem !important;
-  border-radius: 6px !important;
-  color: #d1d5db !important;
+  border-radius: 8px !important;
+  color: #b8bfd1 !important;
   text-decoration: none !important;
-  font-size: 0.9rem !important;
+  font-size: 0.87rem !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
-  position: static !important;
+  position: relative !important;
   float: none !important;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sb-icon {
+  font-size: 1.05rem !important;
+  flex-shrink: 0 !important;
+  opacity: 0.9;
 }
 
 .sb-link:hover {
-  background-color: #312e81 !important;
+  background-color: rgba(245, 165, 36, 0.08) !important;
   color: #fff !important;
 }
 
 .sb-link-active {
-  background-color: #4f46e5 !important;
+  background-color: #4F46E5 !important;
   color: #fff !important;
 }
 
+.sb-link-active::before {
+  content: '';
+  position: absolute;
+  left: -0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background-color: #F5A524;
+  border-radius: 0 3px 3px 0;
+}
+
+/* ===== Footer ===== */
 .sb-footer {
-  padding: 1rem 1.2rem !important;
-  border-top: 1px solid #312e81 !important;
+  padding: 1.1rem 1.2rem !important;
+  border-top: 1px solid rgba(245, 165, 36, 0.15) !important;
 }
 
 .sb-user {
   display: flex !important;
-  flex-direction: column !important;
-  margin-bottom: 0.7rem !important;
+  align-items: center !important;
+  gap: 0.7rem !important;
+  margin-bottom: 0.9rem !important;
+}
+
+.sb-avatar {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(245, 165, 36, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  color: #F5A524 !important;
+  font-size: 0.9rem !important;
+  flex-shrink: 0 !important;
 }
 
 .sb-user-name {
-  font-size: 0.85rem !important;
+  display: block !important;
+  font-size: 0.84rem !important;
   font-weight: 600 !important;
   color: #fff !important;
 }
 
 .sb-user-role {
-  font-size: 0.75rem !important;
+  display: block !important;
+  font-size: 0.72rem !important;
   color: #a5b4fc !important;
+  text-transform: capitalize !important;
 }
 
 .sb-logout {
   width: 100% !important;
-  padding: 0.5rem !important;
-  background-color: #dc2626 !important;
-  color: #fff !important;
-  border: none !important;
-  border-radius: 6px !important;
-  font-size: 0.85rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  padding: 0.55rem !important;
+  background-color: rgba(220, 38, 38, 0.12) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(220, 38, 38, 0.3) !important;
+  border-radius: 8px !important;
+  font-size: 0.83rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .sb-logout:hover {
-  background-color: #b91c1c !important;
+  background-color: #dc2626 !important;
+  color: #fff !important;
+  border-color: #dc2626 !important;
 }
 
 .sb-overlay {
   display: none;
 }
 
-/* ===== MOBILE: sidebar becomes an off-canvas drawer ===== */
+/* ===== MOBILE: off-canvas drawer ===== */
 @media (max-width: 768px) {
   .sb-sidebar {
     position: fixed !important;
@@ -123,7 +207,7 @@
     z-index: 2000 !important;
     transform: translateX(-100%) !important;
     transition: transform 0.25s ease !important;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.45) !important;
   }
 
   .sb-sidebar.sb-sidebar-open {
@@ -131,7 +215,7 @@
   }
 
   .sb-close {
-    display: block !important;
+    display: flex !important;
   }
 
   .sb-overlay {
